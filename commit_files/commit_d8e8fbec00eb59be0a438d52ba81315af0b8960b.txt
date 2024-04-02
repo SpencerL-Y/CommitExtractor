@@ -1,0 +1,17 @@
+commit d8e8fbec00eb59be0a438d52ba81315af0b8960b
+Merge: 50108c352db7 99dc2ef0397d
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Mar 28 14:35:32 2024 -0700
+
+    Merge tag 'nfsd-6.9-1' of git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux
+    
+    Pull nfsd fixes from Chuck Lever:
+    
+     - Address three recently introduced regressions
+    
+    * tag 'nfsd-6.9-1' of git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux:
+      NFSD: CREATE_SESSION must never cache NFS4ERR_DELAY replies
+      SUNRPC: Revert 561141dd494382217bace4d1a51d08168420eace
+      nfsd: Fix error cleanup path in nfsd_rename()
+
+diff files:

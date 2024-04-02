@@ -1,0 +1,22 @@
+commit 317c7bc0ef035d8ebfc3e55c5dde0566fd5fb171
+Merge: 529b10c0091d 037493099099
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Mar 28 17:15:33 2024 -0700
+
+    Merge tag 'mmc-v6.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc
+    
+    Pull MMC fixes from Ulf Hansson:
+     "MMC core:
+       - Fix regression for the mmc ioctl
+    
+      MMC host:
+       - sdhci-of-dwcmshc: Fixup PM support in ->remove_new()
+       - sdhci-omap: Re-tune when device became runtime suspended"
+    
+    * tag 'mmc-v6.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc:
+      sdhci-of-dwcmshc: disable PM runtime in dwcmshc_remove()
+      mmc: sdhci-omap: re-tuning is needed after a pm transition to support emmc HS200 mode
+      mmc: core: Avoid negative index with array access
+      mmc: core: Initialize mmc_blk_ioc_data
+
+diff files:

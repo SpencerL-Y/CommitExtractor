@@ -1,0 +1,26 @@
+commit 6e7a2ffd209b59e98b6617d4b8be01af2391b580
+Merge: d8e8fbec00eb c404f55c26fc
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Mar 28 14:40:46 2024 -0700
+
+    Merge tag 'iommu-fixes-v6.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu
+    
+    Pull iommu fixes from Joerg Roedel:
+     "ARM SMMU fixes:
+    
+       - Fix swabbing of the STE fields in the unlikely event of running on
+         a big-endian machine
+    
+       - Fix setting of STE.SHCFG on hardware that doesn't implement support
+         for attribute overrides
+    
+      IOMMU core:
+    
+       - PASID validation fix in device attach path"
+    
+    * tag 'iommu-fixes-v6.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu:
+      iommu: Validate the PASID in iommu_attach_device_pasid()
+      iommu/arm-smmu-v3: Fix access for STE.SHCFG
+      iommu/arm-smmu-v3: Add cpu_to_le64() around STRTAB_STE_0_V
+
+diff files:

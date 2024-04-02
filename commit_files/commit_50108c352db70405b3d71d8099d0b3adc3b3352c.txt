@@ -1,0 +1,80 @@
+commit 50108c352db70405b3d71d8099d0b3adc3b3352c
+Merge: 8d025e2092e2 18685451fc4e
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu Mar 28 13:09:37 2024 -0700
+
+    Merge tag 'net-6.9-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+    
+    Pull networking fixes from Paolo Abeni:
+     "Including fixes from bpf, WiFi and netfilter.
+    
+      Current release - regressions:
+    
+       - ipv6: fix address dump when IPv6 is disabled on an interface
+    
+      Current release - new code bugs:
+    
+       - bpf: temporarily disable atomic operations in BPF arena
+    
+       - nexthop: fix uninitialized variable in nla_put_nh_group_stats()
+    
+      Previous releases - regressions:
+    
+       - bpf: protect against int overflow for stack access size
+    
+       - hsr: fix the promiscuous mode in offload mode
+    
+       - wifi: don't always use FW dump trig
+    
+       - tls: adjust recv return with async crypto and failed copy to
+         userspace
+    
+       - tcp: properly terminate timers for kernel sockets
+    
+       - ice: fix memory corruption bug with suspend and rebuild
+    
+       - at803x: fix kernel panic with at8031_probe
+    
+       - qeth: handle deferred cc1
+    
+      Previous releases - always broken:
+    
+       - bpf: fix bug in BPF_LDX_MEMSX
+    
+       - netfilter: reject table flag and netdev basechain updates
+    
+       - inet_defrag: prevent sk release while still in use
+    
+       - wifi: pick the version of SESSION_PROTECTION_NOTIF
+    
+       - wwan: t7xx: split 64bit accesses to fix alignment issues
+    
+       - mlxbf_gige: call request_irq() after NAPI initialized
+    
+       - hns3: fix kernel crash when devlink reload during pf
+         initialization"
+    
+    * tag 'net-6.9-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net: (81 commits)
+      inet: inet_defrag: prevent sk release while still in use
+      Octeontx2-af: fix pause frame configuration in GMP mode
+      net: lan743x: Add set RFE read fifo threshold for PCI1x1x chips
+      net: bcmasp: Remove phy_{suspend/resume}
+      net: bcmasp: Bring up unimac after PHY link up
+      net: phy: qcom: at803x: fix kernel panic with at8031_probe
+      netfilter: arptables: Select NETFILTER_FAMILY_ARP when building arp_tables.c
+      netfilter: nf_tables: skip netdev hook unregistration if table is dormant
+      netfilter: nf_tables: reject table flag and netdev basechain updates
+      netfilter: nf_tables: reject destroy command to remove basechain hooks
+      bpf: update BPF LSM designated reviewer list
+      bpf: Protect against int overflow for stack access size
+      bpf: Check bloom filter map value size
+      bpf: fix warning for crash_kexec
+      selftests: netdevsim: set test timeout to 10 minutes
+      net: wan: framer: Add missing static inline qualifiers
+      mlxbf_gige: call request_irq() after NAPI initialized
+      tls: get psock ref after taking rxlock to avoid leak
+      selftests: tls: add test with a partially invalid iov
+      tls: adjust recv return with async crypto and failed copy to userspace
+      ...
+
+diff files:
