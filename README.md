@@ -1,1 +1,2 @@
-# github_commit_extractor
+# CommitExtractor
+
