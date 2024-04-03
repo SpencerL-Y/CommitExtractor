@@ -71,6 +71,12 @@ class chat_interface:
         answer = res.choices[0].message
         # print(answer)
         return answer
+    
+def obtain_llm_info(commit_change):
+    interface = chat_interface()
+    interface.set_up_aiproxy_configs()
+    answer = interface.set_role_and_ask(commit_change)
+    return answer.content
   
 if __name__ == '__main__':
     commit_info = ""
