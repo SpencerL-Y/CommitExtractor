@@ -1,1 +1,6 @@
 linux
+commit_file_changes/*
+commit_files/*
+llm_files/*
+test_files/*
+test_bins

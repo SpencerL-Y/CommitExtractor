@@ -4,7 +4,7 @@ from lxml import etree
 import os, sys
 import requests
 import llm_caller as llmc
-
+length2analyze = 150
 # bro = webdriver.Chrome()
 # initial_url = "https://github.com/torvalds/linux/commits/master/?author=torvalds"
 # brief_xpath = "//div[@data-testid=\"listview-item-title-container\"]//h4//span//a"
@@ -48,7 +48,8 @@ import llm_caller as llmc
 def extract_commit_info_from_local_git():
     if len(os.listdir("./commit_files")) > 0:
         os.system("cd ./commit_files && rm commit_*")
-    os.system("cd linux && git log -n 2 > ../gitlogs.txt")
+        os.system("cd ./commit_file_changes && rm commit_*")
+    os.system("cd linux && git log -n " + str(length2analyze) + " > ../gitlogs.txt")
     gitlogs_f = open("./gitlogs.txt", "r+")
     curr_commit_info = ""
     commit_num = ""
@@ -60,9 +61,17 @@ def extract_commit_info_from_local_git():
                 os.mknod("./commit_files/commit_" + commit_num + ".txt")
                 write_f = open("./commit_files/" + "commit_" + commit_num + ".txt", "w+")
                 write_f.write(curr_commit_info)
-                write_f.write("diff files:\n")
-                os.system("cd linux && git log -p -1 " + commit_num + " >> " + "../commit_files/commit_" + commit_num + ".txt")
+                write_f.write("##### Diff files:\n")
+                
+                os.system("cd linux && git show --name-only " + commit_num + " >> ../commit_file_changes/commit_" + commit_num + "_fileonly.txt")
+                read_f = open("./commit_file_changes/commit_" + commit_num + "_fileonly.txt", "r+")
+                for rline in read_f:
+                    if rline.endswith(".c\n") or rline.endswith(".h\n"):
+                        write_f.write(rline)
+                write_f.write("##### Detail changes:\n")
                 write_f.close()
+
+                os.system("cd linux && git log -p -1 " + commit_num + " >> " + "../commit_files/commit_" + commit_num + ".txt")
             curr_commit_info = ""
             commit_num = line.split("commit")[1].strip()
         curr_commit_info += line
@@ -83,40 +92,57 @@ def ask_llm_questions():
         af.close()
 
 def parse_llm_results_and_generate_tests():
-    vital = False
-    recording_includes = False
-    recording_program = False
-    result_includes = ""
-    result_program = ""
+    if len(os.listdir("./test_files")) > 0:
+        os.system("cd ./test_files && rm commit_*")
     llm_results = os.listdir("./llm_files")
     for f in llm_results:
+        vital = False
+        recording_includes = False
+        recording_program = False
+        result_includes = ""
+        result_program = ""
+        valid_file = True
         file_path = os.path.join("./llm_files", f)
+        file_commit_name = f.split("_")[0] + "_" + f.split("_")[1]
         opf = open(file_path, "r+")
         for line in opf.readlines():
+            if line.find("CHATBEGIN") != -1:
+                continue
+            if line.find("CHATEND") != -1:
+                continue
+            if vital and line.find("INCLUDES:") != -1:
+                recording_includes = True
+                recording_program = False
+                continue
+            if vital and line.find("PROGRAM:") != -1:
+                recording_program = True
+                recording_includes = False
+                continue
             if recording_includes:
                 result_includes += line
             if recording_program:
                 result_program += line
             if line.find("IS_CORE_FUNC") != -1:
                 if line.find("YES") == -1:
-                    return ["not", "vital"]
+                    valid_file = False
+                    break
                 else:
                     vital = True
-            else:
-                print("ERROR in LLM genreated file !!!" + file_path)
-            if vital and line.find("INCLUDES:") != -1:
-                recording_includes = True
-                recording_program = False
-            if vital and line.find("PROGRAM:") != -1:
-                recording_program = True
-                recording_includes = False
-    return [result_includes, result_program]
-
-def create_test_file_by_llm_result(llm_result):
-    result_c_file = ""
-    template = open("./testcase_template.c", "r+")
-    for line in template.readlines():
-        
+        if not valid_file:
+            continue
+        result_program_ds = [result_includes, result_program, file_commit_name]
+        result_c_file = ""
+        template = open("./testcase_template.c", "r+")
+        for line in template.readlines():
+            result_c_file += line
+            if line.find("LLM INCLUDES") != -1:
+                result_c_file += result_program_ds[0]
+            if line.find("LLM PROGRAM") != -1:
+                result_c_file += result_program_ds[1]
+        af = open("./test_files/" + result_program_ds[2] + "_test.c", "a")
+        af.write(result_c_file)
+        af.close()
+    
 if __name__ == "__main__":
     init_depth = 0
     # alternative approach to extract information from website

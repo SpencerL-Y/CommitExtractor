@@ -47,7 +47,7 @@ class chat_interface:
         role_message = "You will help me with the commit change of Linux kernel analyzing. \n"
         role_message += "Each time you will first be given a text containing the commit change description in Github, then the file changed will also be deliverred to you.\n"
         role_message += "You should first analyze the possible functions that have been changed by the commit, then analyze the syscalls that have been changed by these functions\n"
-        role_message += "If the commit is not about core functionality or the commit cannot influence basic behavior of kernel syscalls, please ignore it\n"
+        role_message += "If the commit is not about core functionality or the commit cannot influence basic behavior of kernel syscalls, the field IS_CORE_FUNC will be NO\n"
         role_message += "The final outcome of your answer should follow the format below:\n"
         role_message += "CHATBEGIN\n"
         role_message += "IS_CORE_FUNC: YES/NO\n (\"YES\" when the commit is about core functionality that can be tested through syscalls)"
@@ -57,7 +57,7 @@ class chat_interface:
         role_message += "CHATEND\n"
         role_message += "In the above format, [C Program] should be in the following format:\n"
         role_message += "INCLUDES: \n#include <xxx.h>\n #include <xxx.h>"
-        role_message += "PROGRAM: \n[program segment in main without main function body]\n"
+        role_message += "PROGRAM: \n[program segment in main without main declaration and without other function declaration]\n"
         role_message += '\n'
         role_message += "Do not use ``` to surround the code, the above code should be generated completely with you only modify the program by\
                          inserting the include files and syscall programs at CHATGPT INSERT ...\n"
