@@ -44,7 +44,7 @@ class chat_interface:
         return answer
     
     def set_role_and_ask(self, content):
-        role_message = "You will help me with the commit change of Linux kernel analyzing. \n"
+        role_message =  "You will help me with the commit change of Linux kernel analyzing. \n"
         role_message += "Each time you will first be given a text containing the commit change description in Github, then the file changed will also be deliverred to you.\n"
         role_message += "You should first analyze the possible functions that have been changed by the commit, then analyze the syscalls that have been changed by these functions\n"
         role_message += "If the commit is not about core functionality or the commit cannot influence basic behavior of kernel syscalls, the field IS_CORE_FUNC will be NO\n"

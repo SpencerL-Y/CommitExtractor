@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "types.h": "c",
+        "unistd.h": "c",
+        "mman.h": "c",
+        "features.h": "c",
+        "page-def.h": "c",
+        "const.h": "c"
+    }
+}
